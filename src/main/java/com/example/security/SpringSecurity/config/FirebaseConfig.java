@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseConfig {
@@ -18,8 +20,15 @@ public class FirebaseConfig {
         if (!FirebaseApp.getApps().isEmpty()) {
             return FirebaseApp.getInstance();
         }
-        ClassPathResource resource = new ClassPathResource("firebase-service-account.json");
-        InputStream serviceAccount = resource.getInputStream();
+
+        InputStream serviceAccount;
+        String credentialsJson = System.getenv("FIREBASE_SERVICE_ACCOUNT_JSON");
+        if (credentialsJson != null && !credentialsJson.isBlank()) {
+            serviceAccount = new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8));
+        } else {
+            serviceAccount = new ClassPathResource("firebase-service-account.json").getInputStream();
+        }
+
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
