@@ -19,22 +19,31 @@ public class SecurityConfig {
     public SecurityConfig(UserDetailServiceImpl userDetailService) {
         this.userDetailService = userDetailService;
     }
+//     @Bean
+//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+//         http
+//                 .authorizeHttpRequests(auth -> auth
+//                         .requestMatchers("/", "/public/**","/astrologers/**","/user/**","/product-manager/**","/review/**").permitAll()
+// //                        .requestMatchers("/user/**").hasAnyRole("User","Admin")
+//                         .requestMatchers("/admin/**").hasRole("Admin")
+//                         .anyRequest().authenticated()
+//                 )
+//                 .userDetailsService(userDetailService)
+//                 .httpBasic(Customizer.withDefaults())
+//                 .csrf(AbstractHttpConfigurer::disable);
+
+//         return http.build();
+//     }
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/public/**","/astrologers/**","/user/**","/product-manager/**","/review/**").permitAll()
-//                        .requestMatchers("/user/**").hasAnyRole("User","Admin")
-                        .requestMatchers("/admin/**").hasRole("Admin")
-                        .anyRequest().authenticated()
-                )
-                .userDetailsService(userDetailService)
-                .httpBasic(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
-
-        return http.build();
-    }
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .anyRequest().permitAll()
+        );
+    return http.build();
+}
 
     @Bean
     public PasswordEncoder passwordEncoder(){
