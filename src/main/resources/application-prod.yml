@@ -1,9 +1,8 @@
 spring:
   application:
     name: SpringSecurity
-  data:
-    mongodb:
-      uri: ${MONGODB_URI}
+  mongodb:
+    uri: mongodb+srv://monu-user:Database11@cluster0.mauhbcv.mongodb.net/securityDb?appName=Cluster0
 
 server:
   port: ${PORT:8080}

@@ -20,4 +20,5 @@ public class CallRequestModel {
     private String status;
     private LocalDateTime requestTime;
     private String callType;
+    private String chatRoomId;
 }

@@ -62,8 +62,9 @@ public class AstrologerService {
         Optional<AstrologerModel> optionalAstro = astrologerRepo.findByEmail(astrologerDTO.getEmail());
         if(optionalAstro.isPresent()){
           AstrologerModel astrologerModel = optionalAstro.get();
-          astrologerModel.setFirebaseToken(astrologerDTO.getFirebaseToken());
           if(passwordEncoder.matches((astrologerDTO.getPassword()), astrologerModel.getPassword())){
+              astrologerModel.setFirebaseToken(astrologerDTO.getFirebaseToken());
+              astrologerRepo.save(astrologerModel);
               CommonResDTO<AstrologerModel> res = new CommonResDTO<>(
                       true,
                       "Astrologer Found",
