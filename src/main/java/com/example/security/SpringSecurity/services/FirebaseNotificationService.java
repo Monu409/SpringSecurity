@@ -15,6 +15,10 @@ public class FirebaseNotificationService {
 
     public boolean sendNotification(String fcmToken, String title, String body, Map<String, String> data) {
         try {
+            if (com.google.firebase.FirebaseApp.getApps().isEmpty()) {
+                System.err.println("Firebase not initialized — skipping notification");
+                return false;
+            }
             Message.Builder messageBuilder = Message.builder()
                     .setToken(fcmToken)
                     .setNotification(Notification.builder()
@@ -37,6 +41,9 @@ public class FirebaseNotificationService {
             return true;
         } catch (FirebaseMessagingException e) {
             System.err.println("Failed to send FCM notification: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.err.println("Unexpected error sending FCM notification: " + e.getMessage());
             return false;
         }
     }
